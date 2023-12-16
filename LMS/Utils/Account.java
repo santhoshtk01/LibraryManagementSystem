@@ -1,7 +1,6 @@
 package LMS.Utils;
 
 import LMS.LibraryExceptions.WrongOldPasswordException;
-
 import java.util.Objects;
 
 public class Account {
@@ -12,10 +11,10 @@ public class Account {
     boolean AccountStatus;
 
     // Constructor for login into the account.
-    Account(String rollNo, String password, boolean AccountStatus){
+    Account(String rollNo, String password){
         this.rollNo = rollNo;
         this.password = password;
-        this.AccountStatus = AccountStatus;
+        this.AccountStatus = true;
     }
 
     // Constructor for new user registration
