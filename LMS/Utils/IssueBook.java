@@ -12,7 +12,7 @@ public class IssueBook extends Librarian implements UserAuthentication{
 
     // Indicate the current user account who is using the system.
     Account currentUserAccount;
-    Scanner scan;
+    Scanner scan = new Scanner(System.in);
     boolean userAuthenticated;
 
     IssueBook(Account account){
@@ -23,7 +23,7 @@ public class IssueBook extends Librarian implements UserAuthentication{
     // Display the available books to the user.
     void displayBooks(){
         for(int i = 0; i < 15; i++){
-            if(bookCounts[i] == 0) {
+            if(bookCounts[i] != 0) {
                 System.out.println((i + 1) + " : " + this.book[i].getTitle());
             }
         }
@@ -35,6 +35,7 @@ public class IssueBook extends Librarian implements UserAuthentication{
         * */
         if(this.userAuthenticated){
             Book chosen = this.book[index];
+            // TODO: Add the transaction to a text file.
             String transaction = "Book title: " + chosen.getTitle() + "\n" + "Due date : " + this.dueDate + "\n" + "User : " + currentUserAccount.rollNo;
             System.out.println(transaction);
         }
@@ -46,12 +47,11 @@ public class IssueBook extends Librarian implements UserAuthentication{
 
     @Override
     public void checkUserExist() {
-        System.out.println("Enter your Roll No: ");
-        String rollNo = this.scan.nextLine();
+
         StudentsData sd = new StudentsData();
 
         try{
-            sd.checkRollNoExist(rollNo);
+            sd.checkRollNoExist(this.currentUserAccount.rollNo);
             this.userAuthenticated = true;
         }
         catch(Exception e){

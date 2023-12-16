@@ -18,12 +18,11 @@ public class ReturnBook extends Librarian implements UserAuthentication{
     // Check if the person already registered.
     @Override
     public void checkUserExist(){
-        System.out.println("Enter your Roll No: ");
-        String rollNo = this.scan.nextLine();
+
         StudentsData sd = new StudentsData();
 
         try{
-            sd.checkRollNoExist(rollNo);
+            sd.checkRollNoExist(this.currentUserAccount.rollNo);
             this.userAuthenticated = true;
         }
         catch(Exception e){
@@ -31,4 +30,8 @@ public class ReturnBook extends Librarian implements UserAuthentication{
             System.out.println("The entered roll no doesn't exist. Kindly make a registration.");
         }
     }
+
+    void checkDue(){}
+    // TODO : Read through the file and check if the due is completed or not.
+    // TODO: If completed return true indicating the user must pay fine.
 }

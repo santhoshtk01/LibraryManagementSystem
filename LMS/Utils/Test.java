@@ -1,14 +1,19 @@
 package LMS.Utils;
 
 import LMS.Utils.StudentsData;
+import LMS.Utils.IssueBook;
+import LMS.Utils.Account;
 
 public class Test{
     public static void main(String[] args) throws Exception {
-        StudentsData sd = new StudentsData();
-        System.out.println(sd.checkRollNoExist("22Z433"));
-        Account account = new Account("22z433", "22z433");
-        IssueBook ib = new IssueBook(account);
+        Account acc = new Account("22Z433", "22Z433");
+
+        IssueBook ib = new IssueBook(acc);
         ib.displayBooks();
-        ib.createTransaction(5);
+        ib.checkUserExist();
+        ib.createTransaction(3);
+
+        ReturnBook rb = new ReturnBook(acc);
+        rb.checkUserExist();
     }
 }
