@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class IssueBook extends Librarian implements UserAuthentication{
 
-    // Indicate the current user account who is using the system.
+    // Indicate the current user account who is using the system. 
     Account currentUserAccount;
     Scanner scan = new Scanner(System.in);
     boolean userAuthenticated;
