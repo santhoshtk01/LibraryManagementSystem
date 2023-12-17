@@ -20,6 +20,6 @@ public class Test{
         rb.checkUserExist();
 
         // Check due date and print book information
-        rb.checkDue("22Z433"); // Pass the user roll number only
+        rb.checkDue(); // Pass the user roll number only
     }
 }

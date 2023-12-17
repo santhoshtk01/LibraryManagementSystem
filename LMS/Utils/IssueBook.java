@@ -42,7 +42,7 @@ public class IssueBook extends Librarian implements UserAuthentication{
         if(this.userAuthenticated){
             Book chosen = this.book[index];
             //  Added the transaction to a text file.
-            String transaction = "Book title: " + chosen.getTitle() + "\n" + "Due date : " + this.dueDate + "\n" + "User : " + currentUserAccount.rollNo;
+            String transaction = chosen.getTitle() + " - " + this.dueDate + " - " + currentUserAccount.rollNo;
             System.out.println(transaction);
              writeTransactionToFile(transaction);
         }
@@ -55,7 +55,7 @@ public class IssueBook extends Librarian implements UserAuthentication{
         String fileName = "transactions.txt";
 
         try (FileWriter writer = new FileWriter(fileName, true)) {
-            writer.write(transaction + "\n\n");
+            writer.write(transaction + "\n");
             System.out.println("Transaction recorded in " + fileName);
         } catch (IOException e) {
             System.err.println("Error writing to the file: " + e.getMessage());
@@ -74,5 +74,10 @@ public class IssueBook extends Librarian implements UserAuthentication{
             this.userAuthenticated = false;
             System.out.println("The entered roll no doesn't exist. Kindly make a registration.");
         }
+    }
+
+    @Override
+    void checkDue() {
+
     }
 }

@@ -5,7 +5,7 @@ import LMS.Books.Book;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Librarian{
+public abstract class Librarian{
     String[][] books = {
             {"978-0-678901-23-4", "Artificial Intelligence Revolution", "Computer Science", "Quantum Computing Press", "English", "Sophia Mindforge"},
             {"978-0-789012-34-5", "Cloud Computing Unleashed", "Computer Science", "Cloud Tech LMS.Books", "English", "Ethan Skylink"},
@@ -63,5 +63,7 @@ public class Librarian{
 
     }
 
+    // Check if the person already registered.
+    abstract void checkDue();
 }
 
