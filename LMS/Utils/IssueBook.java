@@ -1,14 +1,22 @@
 package LMS.Utils;
 
 import LMS.Books.Book;
+/* 
 import LMS.Utils.UserAuthentication;
 import LMS.Utils.Librarian;
 import LMS.Utils.StudentsData;
+*/
 import LMS.LibraryExceptions.AuthenticationFailed;
 
 import java.util.Scanner;
+import java.io.*;
 
 public class IssueBook extends Librarian implements UserAuthentication{
+
+    public Book[] getBooks() {
+        return this.book;
+    }
+
 
     // Indicate the current user account who is using the system. 
     Account currentUserAccount;
@@ -35,15 +43,27 @@ public class IssueBook extends Librarian implements UserAuthentication{
         * */
         if(this.userAuthenticated){
             Book chosen = this.book[index];
-            // TODO: Add the transaction to a text file.
+            //  Add the transaction to a text file.
             String transaction = "Book title: " + chosen.getTitle() + "\n" + "Due date : " + this.dueDate + "\n" + "User : " + currentUserAccount.rollNo;
             System.out.println(transaction);
+            writeTransactionToFile(chosen);
         }
         else{
             throw new AuthenticationFailed("Authentication failed.");
         }
 
     }
+     private void writeTransactionToFile(String transaction) {
+        String fileName = "transactions.txt";
+
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            writer.write(transaction + "\n\n");
+            System.out.println("Transaction recorded in " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
+        }
+    }
+
 
     @Override
     public void checkUserExist() {
