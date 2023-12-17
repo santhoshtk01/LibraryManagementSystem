@@ -21,7 +21,7 @@ public class ReturnBook extends Librarian implements UserAuthentication{
     private Account currentUserAccount;
 
 
-    ReturnBook(Account account){
+    public ReturnBook(Account account){
         super();
         this.currentUserAccount = account;
         this.scan = new Scanner(System.in);
@@ -30,7 +30,7 @@ public class ReturnBook extends Librarian implements UserAuthentication{
 
     // Check if the person already registered.
     @Override
-    void checkDue(){
+    public void checkDue(){
         if (userAuthenticated) {
 
             // Search for the book in the transactions file using the user's roll number
@@ -76,7 +76,7 @@ public class ReturnBook extends Librarian implements UserAuthentication{
             String line;
             while ((line = reader.readLine()) != null) {
                 // Check if the line contains "rollNo"
-                if (line.contains("22Z433")) {
+                if (line.contains(this.currentUserAccount.rollNo)) {
                     // Extract date using regex
                     String date = extractDate(line);
 
