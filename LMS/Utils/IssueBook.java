@@ -1,9 +1,6 @@
 package LMS.Utils;
 
 import LMS.Books.Book;
-import LMS.Utils.UserAuthentication;
-import LMS.Utils.Librarian;
-import LMS.Utils.StudentsData;
 import LMS.LibraryExceptions.AuthenticationFailed;
 
 import java.util.Scanner;
@@ -21,13 +18,13 @@ public class IssueBook extends Librarian implements UserAuthentication{
     Scanner scan = new Scanner(System.in);
     boolean userAuthenticated;
 //this is the change 
-    IssueBook(Account account){
+public IssueBook(Account account){
         this.currentUserAccount = account;
         this.addBookItem();
     }
 
     // Display the available books to the user.
-    void displayBooks(){
+    public void displayBooks(){
         for(int i = 0; i < 15; i++){
             if(bookCounts[i] != 0) {
                 System.out.println((i + 1) + " : " + this.book[i].getTitle());
@@ -35,7 +32,7 @@ public class IssueBook extends Librarian implements UserAuthentication{
         }
     }
 
-    void createTransaction(int index) throws Exception{
+    public void createTransaction(int index) throws Exception{
         /*
         * param: index - indicates which book is chosen by the user.
         * */
@@ -65,9 +62,10 @@ public class IssueBook extends Librarian implements UserAuthentication{
     public void checkUserExist() {
 
         StudentsData sd = new StudentsData();
+        String username = " ";
 
         try{
-            sd.checkRollNoExist(this.currentUserAccount.rollNo);
+            username = sd.checkRollNoExist(this.currentUserAccount.rollNo);
             this.userAuthenticated = true;
         }
         catch(Exception e){

@@ -105,7 +105,7 @@ class StudentsData{
         * Otherwise, raise an rollNoNotExist exception.
         * */
         for(String[] students: this.studentData){
-            if(students[0] == rollNo){
+            if(Objects.equals(students[0], rollNo)){
                 return students[1];
             }
         }
