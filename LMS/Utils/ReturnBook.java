@@ -1,8 +1,6 @@
 package LMS.Utils;
 
 import java.util.Scanner;
-import LMS.Utils.StudentsData;
-import LMS.Utils.UserAuthentication;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,7 +8,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import LMS.LibraryExceptions.RollNoNotExistException;
+
 
 public class ReturnBook extends Librarian implements UserAuthentication{
 
@@ -29,18 +30,23 @@ public class ReturnBook extends Librarian implements UserAuthentication{
 
     // Check if the person already registered.
     @Override
-    void checkDue(String userRollNo) {
+    void checkDue(){
         if (userAuthenticated) {
-            System.out.print("Enter the book ISBN to check for due date: ");
-            String isbn = scan.nextLine();
 
             // Search for the book in the transactions file using the user's roll number
             String transactionFileName = "transactions.txt";
-            String dueDateFromTransaction = findDueDateInTransaction(isbn, userRollNo, transactionFileName);
+
+            // Finding the due date in the transaction
+            String dueDateFromTransaction = null;
+            try {
+                dueDateFromTransaction = findDueDateInTransaction(this.currentUserAccount.rollNo, transactionFileName);
+            } catch (Exception rnnee) {
+                System.out.println(rnnee);
+            }
 
             if (dueDateFromTransaction != null) {
                 LocalDate currentDate = LocalDate.now();
-                LocalDate dueDate = LocalDate.parse(dueDateFromTransaction, DateTimeFormatter.ofPattern("Due date : dd-MM-yyyy"));
+                LocalDate dueDate = LocalDate.parse(dueDateFromTransaction, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
                 // Check if the book is overdue
                 if (currentDate.isAfter(dueDate)) {
@@ -65,15 +71,18 @@ public class ReturnBook extends Librarian implements UserAuthentication{
         }
     }
 
-    private String findDueDateInTransaction(String isbn, String userRollNo, String transactionFileName) {
+    private String findDueDateInTransaction(String userRollNo, String transactionFileName) throws Exception{
         try (BufferedReader reader = new BufferedReader(new FileReader(transactionFileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains("Book title: " + isbn) && line.contains("User : " + userRollNo)) {
-                    // Extract due date from the line
-                    int startIndex = line.indexOf("Due date : ") + 12;
-                    int endIndex = line.indexOf("\n", startIndex);
-                    return line.substring(startIndex, endIndex);
+                // Check if the line contains "rollNo"
+                if (line.contains("22Z433")) {
+                    // Extract date using regex
+                    String date = extractDate(line);
+
+                    return date;
+                } else {
+                        throw new RollNoNotExistException("Roll number doesn't exist.");
                 }
             }
         } catch (IOException e) {
@@ -106,5 +115,20 @@ public class ReturnBook extends Librarian implements UserAuthentication{
         // Assuming a flat fine rate for overdue books (you can adjust this as needed)
         double fineRate = 2.0; // $2 per day
         return fineRate * daysOverdue;
+    }
+
+    // Method to extract date using regex
+    private static String extractDate(String line) {
+        // Define a regex pattern for extracting date
+        String regex = "\\b\\d{2}-\\d{2}-\\d{4}\\b";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(line);
+
+        // Find the date in the line
+        if (matcher.find()) {
+            return matcher.group();
+        } else {
+            return "Date not found";
+        }
     }
 }
